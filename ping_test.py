@@ -10,9 +10,10 @@
 from icmplib import ping
 from datetime import datetime, time
 
-fname = 'ping_results.txt'
+fname = '139-60-77-193-ping_results.txt'
 
-target = '8.8.8.8'
+# target = '8.8.8.8'
+target = '139.60.77.193'
 # count = 10 # 10 seconds at interval=1
 count = 60 # 60 seconds at interval=1
 
@@ -20,5 +21,12 @@ while True:
   host = ping(target, count=count, interval=1, privileged=False)
   # print('packet loss (%): ', 100*host.packet_loss)
   f = open(fname, 'a')
-  f.write(datetime.today().isoformat() + '\tpackets sent: ' + str(host.packets_sent) + '\tpackets received: ' + str(host.packets_received) + '\tpacket loss (%): ' + str(round(100*host.packet_loss, 1)) + '\n')
+  f.write( datetime.today().isoformat()
+          + '  sent: ' + str(host.packets_sent)
+          + '  received: ' + str(host.packets_received)
+          + '  loss (%): ' + str(round(100*host.packet_loss, 0))
+          + '    rtt min/avg/max: '
+          + str(round(host.min_rtt, 1)) + '/'
+          + str(round(host.avg_rtt, 1)) + '/'
+          + str(round(host.max_rtt, 1)) + '\n' )
   f.close()
